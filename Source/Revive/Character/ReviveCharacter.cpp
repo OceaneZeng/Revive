@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Revive/Weapon/ReviveWeapon.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -55,13 +56,35 @@ AReviveCharacter::AReviveCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Blueprints/Character/BP_ThirdPersonCharacter"));
+	static ConstructorHelpers::FClassFinder<AActor> WeaponBPClass(TEXT("/Game/Blueprints/Weapon/BP_Weapon"));
+	if (WeaponBPClass.Class != nullptr)
+	{
+		DefaultWeaponClass = WeaponBPClass.Class;
+	}
 }
 
 void AReviveCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	// 生成武器
+	if (DefaultWeaponClass)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		// 在角色的手上生成武器
+		CurWeapon = GetWorld()->SpawnActor<AReviveWeapon>(DefaultWeaponClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+		
+		// 如果武器生成成功，则附加到角色骨骼
+		if (CurWeapon)
+		{
+			// 附加到骨骼（假设骨骼插槽名为 "WeaponSocket"）
+			CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("WeaponSocket"));
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,10 +104,6 @@ void AReviveCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
-		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AReviveCharacter::Move);
 

@@ -22,4 +22,12 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	UPROPERTY(VisibleAnywhere, Category = Components)
+	USkeletalMeshComponent* WeaponMesh;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = Weapon, meta=(BlueprintThreadSafe))
+	USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
 };
