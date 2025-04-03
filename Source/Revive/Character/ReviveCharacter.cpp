@@ -18,7 +18,7 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AReviveCharacter::AReviveCharacter()
 {
-	// Set size for collision capsule
+	// 设置胶囊体碰撞大小
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
 	// Don't rotate when the controller rotates. Let that just affect the camera.
@@ -27,14 +27,13 @@ AReviveCharacter::AReviveCharacter()
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
+	GetCharacterMovement()->bOrientRotationToMovement = false; // Character 朝向移动方向	
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MaxWalkSpeed = 450.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
@@ -42,8 +41,11 @@ AReviveCharacter::AReviveCharacter()
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->TargetArmLength = 800.0f; // The camera follows at this distance behind the character	
+	CameraBoom->bUsePawnControlRotation = false; // Rotate the arm based on the controller
+	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f)); // 俯视角度
+	CameraBoom->bEnableCameraLag = true;
+	CameraBoom->CameraLagSpeed = 3.0f;
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -52,6 +54,8 @@ AReviveCharacter::AReviveCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Blueprints/Character/BP_ThirdPersonCharacter"));
 }
 
 void AReviveCharacter::BeginPlay()
@@ -100,17 +104,14 @@ void AReviveCharacter::Move(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		// 获取摄像机的朝向，确保角色始终按照摄像机方向移动
+		FRotator CameraRotation = FollowCamera->GetComponentRotation();
+		CameraRotation.Pitch = 0.f; // 确保 Pitch 不影响方向
+		CameraRotation.Roll = 0.f;
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		FVector ForwardDirection = CameraRotation.Vector();
+		FVector RightDirection = FRotationMatrix(CameraRotation).GetScaledAxis(EAxis::Y);
 
-		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
@@ -118,13 +119,23 @@ void AReviveCharacter::Move(const FInputActionValue& Value)
 
 void AReviveCharacter::Look(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	if (!Controller) return;
 
-	if (Controller != nullptr)
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController) return;
+
+	FHitResult HitResult;
+	if (PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
 	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		FVector MouseWorldLocation = HitResult.ImpactPoint;
+		FVector CharacterLocation = GetActorLocation();
+
+		FRotator TargetRotation = (MouseWorldLocation - CharacterLocation).Rotation();
+		TargetRotation.Pitch = 0.f; // 只让角色旋转 Yaw，不影响 Pitch
+		TargetRotation.Roll = 0.f;
+
+		// 使用插值，使旋转更平滑
+		FRotator NewRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->GetDeltaSeconds(), 10.0f);
+		SetActorRotation(NewRotation);
 	}
 }

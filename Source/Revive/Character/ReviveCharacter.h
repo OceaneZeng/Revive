@@ -44,6 +44,24 @@ class AReviveCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FireAction;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	float Speed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	float Direction;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	bool bIsMoving;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	bool bIsAiming;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	bool bIsReloading;
+
 public:
 	AReviveCharacter();
 	
@@ -55,6 +73,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	void BeginFire(const FInputActionValue& Value);
+	void EndFire(const FInputActionValue& Value);
 			
 
 protected:
@@ -69,5 +90,20 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UFUNCTION(BlueprintCallable, Category = Animation, meta=(BlueprintThreadSafe))
+	void SetSpeed(float value) { Speed = value; }
+
+	UFUNCTION(BlueprintCallable, Category = Animation, meta=(BlueprintThreadSafe))
+	void SetDirection(float value) { Direction = value; }
+
+	UFUNCTION(BlueprintCallable, Category = Animation, meta=(BlueprintThreadSafe))
+	void SetIsMoving(bool value) { bIsMoving = value; }
+
+	UFUNCTION(BlueprintCallable, Category = Animation, meta=(BlueprintThreadSafe))
+	void SetIsAiming(bool value) { bIsAiming = value; }
+
+	UFUNCTION(BlueprintCallable, Category = Animation, meta=(BlueprintThreadSafe))
+	void SetIsReloading(bool value) { bIsReloading = value; }
 };
 
