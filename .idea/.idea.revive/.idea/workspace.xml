@@ -14,11 +14,10 @@
   <component name="ChangeListManager">
     <list default="true" id="737b0bc8-8ecf-4565-8cd8-4f39b1036e38" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.revive/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.revive/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/BigLocomotionPackV04/Demo/Characters/Mannequins/Meshes/SK_Mannequin.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/BigLocomotionPackV04/Demo/Characters/Mannequins/Meshes/SK_Mannequin.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_ThirdPersonCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_ThirdPersonCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Weapon/BP_Weapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Weapon/BP_Weapon.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Revive/Character/ReviveCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Revive/Character/ReviveCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Revive/Character/ReviveCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Revive/Character/ReviveCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Revive/Weapon/ReviveWeapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Revive/Weapon/ReviveWeapon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Revive/Weapon/ReviveWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Revive/Weapon/ReviveWeapon.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,22 +48,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ Project.Revive.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ Project.Revive.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C/C++ Project.Revive">
     <configuration name="Revive" type="CppProject" factoryName="C++ Project">
       <configuration_1 setup="1">
@@ -174,8 +173,20 @@
       <updated>1743661624949</updated>
       <workItem from="1743661627260" duration="1456000" />
       <workItem from="1743663318681" duration="5190000" />
-      <workItem from="1743694524111" duration="1254000" />
+      <workItem from="1743694524111" duration="2874000" />
+      <workItem from="1743739236562" duration="2761000" />
+      <workItem from="1744203326702" duration="182000" />
+      <workItem from="1744480090951" duration="1835000" />
     </task>
+    <task id="LOCAL-00001" summary="生成武器并附加到插槽">
+      <option name="closed" value="true" />
+      <created>1743696901738</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743696901738</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,6 +196,7 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="生成武器并附加到插槽" />
+    <option name="LAST_COMMIT_MESSAGE" value="生成武器并附加到插槽" />
   </component>
 </project>

@@ -109,6 +109,10 @@ void AReviveCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AReviveCharacter::Look);
+
+		//Firing
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AReviveCharacter::BeginFire);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AReviveCharacter::EndFire);
 	}
 	else
 	{
