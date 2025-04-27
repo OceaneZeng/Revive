@@ -40,6 +40,14 @@ class AReviveCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* LookAction;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FireAction;
+
 public:
 	AReviveCharacter();
 	
@@ -48,8 +56,14 @@ protected:
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
-
+	
 	auto LookToCursor(float DeltaTime) -> void;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Weapon)
+	void BeginFire(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Weapon)
+	void EndFire(const FInputActionValue& Value);
 			
 
 protected:
@@ -59,12 +73,13 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
-	virtual void Tick(float DeltaTime) override;
 
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	virtual void Tick(float DeltaTime) override;
 };
 

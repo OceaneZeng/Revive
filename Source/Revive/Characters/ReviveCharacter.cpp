@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "MaterialHLSLTree.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -92,6 +93,10 @@ void AReviveCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AReviveCharacter::Move);
+
+		//Firing
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AReviveCharacter::BeginFire);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AReviveCharacter::EndFire);
 	}
 	else
 	{
