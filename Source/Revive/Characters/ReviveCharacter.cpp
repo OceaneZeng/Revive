@@ -10,7 +10,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "MaterialHLSLTree.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -94,9 +93,16 @@ void AReviveCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AReviveCharacter::Move);
 
+		//Sprinting
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AReviveCharacter::BeginSprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AReviveCharacter::EndSprint);
+
 		//Firing
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AReviveCharacter::BeginFire);
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AReviveCharacter::EndFire);
+
+		// Reloading
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &AReviveCharacter::Reload);
 	}
 	else
 	{
@@ -145,4 +151,26 @@ void AReviveCharacter::LookToCursor(float DeltaTime)
 		FRotator NewRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, DeltaTime, 10.0f);
 		SetActorRotation(NewRotation);
 	}
+}
+
+void AReviveCharacter::BeginSprint_Implementation(const FInputActionValue& Value)
+{
+	GetCharacterMovement()->MaxWalkSpeed = 450.f;
+}
+
+void AReviveCharacter::EndSprint_Implementation(const FInputActionValue& Value)
+{
+	GetCharacterMovement()->MaxWalkSpeed = 150.f;
+}
+
+void AReviveCharacter::BeginFire_Implementation(const FInputActionValue& Value)
+{
+}
+
+void AReviveCharacter::EndFire_Implementation(const FInputActionValue& Value)
+{
+}
+
+void AReviveCharacter::Reload_Implementation(const FInputActionValue& Value)
+{
 }

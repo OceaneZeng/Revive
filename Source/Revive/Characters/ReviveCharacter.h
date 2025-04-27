@@ -44,9 +44,15 @@ class AReviveCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SprintAction;
+
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* FireAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ReloadAction;
 
 public:
 	AReviveCharacter();
@@ -59,11 +65,20 @@ protected:
 	
 	auto LookToCursor(float DeltaTime) -> void;
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Weapon)
+	UFUNCTION(BlueprintNativeEvent, Category=Locomotion)
+	void BeginSprint(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintNativeEvent, Category=Locomotion)
+	void EndSprint(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintNativeEvent, Category=Weapon)
 	void BeginFire(const FInputActionValue& Value);
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category=Weapon)
+	UFUNCTION(BlueprintNativeEvent, Category=Weapon)
 	void EndFire(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintNativeEvent, Category=Weapon)
+	void Reload(const FInputActionValue& Value);
 			
 
 protected:
