@@ -16,15 +16,13 @@ class REVIVE_API AReviveWeapon : public AActor
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	USphereComponent* PickUpSphere;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* SkeletalMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UNiagaraComponent* NiagaraEffect;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	USphereComponent* PickUpSphereComponent;
-
-	FTimerHandle PickupTimerHandle; // 定时器句柄
 
 public:
 	// Sets default values for this actor's properties

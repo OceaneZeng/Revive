@@ -5,8 +5,6 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "NiagaraComponent.h"
 #include "Components/SphereComponent.h"
-#include "TimerManager.h"
-#include "Revive/Characters/ReviveCharacter.h"
 
 
 // Sets default values
@@ -16,17 +14,17 @@ AReviveWeapon::AReviveWeapon()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 创建骨骼网格体组件
-	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
-	SetRootComponent(SkeletalMesh); // 把它设为RootComponent
+	PickUpSphere = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+	SetRootComponent(PickUpSphere); // 把它设为RootComponent
+	PickUpSphere->SetSphereRadius(150.f); // 设置范围半径，比如 150cm
 
+	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+	SkeletalMesh->SetupAttachment(PickUpSphere);
+	
 	// 创建Niagara粒子组件
 	NiagaraEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraEffect"));
 	NiagaraEffect->SetupAttachment(SkeletalMesh); // 粒子附着在骨骼网格体上
-
-	PickUpSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
-	PickUpSphereComponent->SetupAttachment(SkeletalMesh);
-	PickUpSphereComponent->SetSphereRadius(150.f); // 设置范围半径，比如 150cm
-
+	
 	NiagaraEffect->bAutoActivate = true;
 }
 
