@@ -54,10 +54,6 @@ class AReviveCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ReloadAction;
 
-public:
-	AReviveCharacter();
-	
-
 protected:
 
 	/** Called for movement input */
@@ -79,7 +75,13 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, Category=Weapon)
 	void Reload(const FInputActionValue& Value);
-			
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category=Weapon)
+	void SwitchWeapon(FName RowName);
+
+public:
+	AReviveCharacter();
+	
 
 protected:
 	// APawn interface

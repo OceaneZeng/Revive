@@ -6,7 +6,6 @@
 #include "NiagaraComponent.h"
 #include "Components/SphereComponent.h"
 
-
 // Sets default values
 AReviveWeapon::AReviveWeapon()
 {
@@ -41,18 +40,32 @@ void AReviveWeapon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AReviveWeapon::OnPickedUp_Implementation()
+void AReviveWeapon::BeginShoot_Implementation()
 {
-	if (NiagaraEffect)
-	{
-		NiagaraEffect->Deactivate(); // 关闭特效
-	}
 }
 
-void AReviveWeapon::OnDropped_Implementation()
+void AReviveWeapon::EndShoot_Implementation()
 {
-	if (NiagaraEffect)
+}
+
+void AReviveWeapon::Reload_Implementation()
+{
+}
+
+int32 AReviveWeapon::ComputeLeftAmmo()
+{
+	LeftAmmo = CurAmmo;
+	CurAmmo = 0;
+	int32 tempAmmo = TotalAmmo - (MaxAmmoPerClip - LeftAmmo);
+	if (tempAmmo > 0)
 	{
-		NiagaraEffect->Activate(); // 开启特效
+		TotalAmmo = tempAmmo;
+		LeftAmmo = MaxAmmoPerClip;
 	}
+	else
+	{
+		TotalAmmo = 0;
+		LeftAmmo = LeftAmmo + TotalAmmo;
+	}
+	return LeftAmmo;
 }

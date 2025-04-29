@@ -24,6 +24,32 @@ class REVIVE_API AReviveWeapon : public AActor
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UNiagaraComponent* NiagaraEffect;
 
+protected:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category=Weapon)
+	void BeginShoot();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category=Weapon)
+	void EndShoot();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category=Weapon)
+	void Reload();
+
+	UFUNCTION(BlueprintCallable, Category=Ammo)
+	int32 ComputeLeftAmmo();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Ammo)
+	int32 CurAmmo = 30;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Ammo)
+	int32 MaxAmmoPerClip = 30;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Ammo)
+	int32 TotalAmmo = 200;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=Ammo)
+	int32 LeftAmmo = 0;
+
+
 public:
 	// Sets default values for this actor's properties
 	AReviveWeapon();
@@ -35,12 +61,4 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
-	// 被拾取时调用
-	UFUNCTION(BlueprintNativeEvent)
-	void OnPickedUp();
-
-	// 被丢弃时调用
-	UFUNCTION(BlueprintNativeEvent)
-	void OnDropped();
 };

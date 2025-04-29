@@ -174,3 +174,7 @@ void AReviveCharacter::EndFire_Implementation(const FInputActionValue& Value)
 void AReviveCharacter::Reload_Implementation(const FInputActionValue& Value)
 {
 }
+
+void AReviveCharacter::SwitchWeapon_Implementation(FName RowName)
+{
+}
